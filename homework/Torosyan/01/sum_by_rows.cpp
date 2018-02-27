@@ -23,7 +23,7 @@ private:
 const int n = 10000;
 
 int main() {
-	int *A[n];
+	int **A = new int*[n];
 	for (int i = 0; i < n; ++i) {
 		A[i] = new int[n];
 		for (int j = 0; j < n; ++j) {
@@ -40,5 +40,8 @@ int main() {
 			}
 		}
 		std::cout << "Sum of array elements is : " << sum << std::endl;
+	}
+	for (int i = 0; i < n; ++i) {
+		delete[] A[i];
 	}
 }
