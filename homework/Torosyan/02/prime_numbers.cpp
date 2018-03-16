@@ -52,4 +52,4 @@ int main(int argc, char *argv[]) {
     }
     delete[] is_prime;
     return 0;
-}
+
