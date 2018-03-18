@@ -1,20 +1,21 @@
 #include <vector>
 #include <iostream>
-
-#define check(cond) do { if (!(cond)) std::cout << "line " << __LINE__ << ": " << #cond << '\n'; } while(0)
-#define check_throw(expr, err) do { try { expr; } catch (const err&) { break ; } catch (...) { } std::cout << "line " << __LINE__ << '\n'; } while(0)
+#include <algorithm>
 
 
 class Line {
     size_t len_;
     std::vector<int> m;
-    void swap (Line& b) {
-        std::swap(len_, b.len_);
-        std::swap(m, b.m);
-    }
+
 public:
-    Line (int l) : len_(l) {
-        m = std::vector<int> (len_, 0);
+    Line(int l) : len_(l), m(std::vector<int> (len_, 0)) {}
+
+    Line(const Line& other) {
+        len_ = other.len_;
+        m = std::vector<int> (len_);
+        for (int i = 0; i < len_; ++i) {
+            m[i] = other.m[i];
+        }
     }
 
     Line& operator= (Line mt) {
@@ -35,7 +36,7 @@ public:
     }
 
     bool operator!= (const Line& mt) const{
-        return !(mt == *this);
+        return !operator==(mt);
     }
 
     int& operator[] (int i) {
@@ -43,6 +44,18 @@ public:
             throw std::out_of_range("");
         }
         return m[i];
+    }
+
+    const int& operator[] (int i) const{        
+        if (i >= len_) {
+            throw std::out_of_range("");
+        }
+        return m[i];
+    }
+
+    void swap (Line& b) {
+        std::swap(len_, b.len_);
+        std::swap(m, b.m);
     }
 };
 
@@ -52,14 +65,17 @@ class Matrix {
     size_t rows_;
     size_t cols_;
     std::vector<Line> m;
-    void swap (Matrix& b) {
-        std::swap(rows_, b.rows_);
-        std::swap(cols_, b.cols_);
-        std::swap(m, b.m);
-    }
+
 public:
-    Matrix (int r, int c) : rows_(r), cols_(c) {
+    Matrix(int r, int c) : rows_(r), cols_(c), m(std::vector<Line> (rows_, Line(cols_))) {}
+
+    Matrix(const Matrix& other) {
+        rows_ = other.rows_;
+        cols_ = other.cols_;
         m = std::vector<Line> (rows_, Line(cols_));
+        for (int i = 0; i < rows_; ++i) {
+            m[i] = other.m[i];
+        }
     }
 
     Matrix& operator= (Matrix mt) {
@@ -89,7 +105,7 @@ public:
     }
 
     bool operator!= (const Matrix& mt) const{
-        return !(mt == *this);
+        return !operator==(mt);
     }
 
     Line& operator[] (int i) {
@@ -97,6 +113,19 @@ public:
             throw std::out_of_range("");
         }
         return m[i];
+    }
+
+    const Line& operator[] (int i) const {
+        if (i >= rows_) {
+            throw std::out_of_range("");
+        }
+        return m[i];
+    }
+
+    void swap (Matrix& b) {
+        std::swap(rows_, b.rows_);
+        std::swap(cols_, b.cols_);
+        std::swap(m, b.m);
     }
 
     unsigned getRows() const{
