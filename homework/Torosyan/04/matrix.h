@@ -2,24 +2,16 @@
 #include <iostream>
 #include <algorithm>
 
-
 class Line {
     size_t len_;
     std::vector<int> m;
 
 public:
-    Line(int l) : len_(l), m(std::vector<int> (len_, 0)) {}
+    Line(int l) : len_(l), m(len_, 0) {}
 
-    Line(const Line& other) {
-        len_ = other.len_;
-        m = std::vector<int> (len_);
-        for (int i = 0; i < len_; ++i) {
-            m[i] = other.m[i];
-        }
-    }
-
-    Line& operator= (Line mt) {
-        mt.swap(*this);
+    Line& operator= (const Line& mt) {
+        len_ = mt.len_;
+        m = mt.m;
         return *this;
     }
 
@@ -67,19 +59,12 @@ class Matrix {
     std::vector<Line> m;
 
 public:
-    Matrix(int r, int c) : rows_(r), cols_(c), m(std::vector<Line> (rows_, Line(cols_))) {}
+    Matrix(int r, int c) : rows_(r), cols_(c), m(rows_, Line(cols_)) {}
 
-    Matrix(const Matrix& other) {
-        rows_ = other.rows_;
-        cols_ = other.cols_;
-        m = std::vector<Line> (rows_, Line(cols_));
-        for (int i = 0; i < rows_; ++i) {
-            m[i] = other.m[i];
-        }
-    }
-
-    Matrix& operator= (Matrix mt) {
-        mt.swap(*this);
+    Matrix& operator= (const Matrix& mt) {
+        m = mt.m;
+        rows_ = mt.rows_;
+        cols_ = mt.cols_;
         return *this;
     }
 
