@@ -32,14 +32,14 @@ public:
     }
 
     int& operator[] (int i) {
-        if (i >= len_) {
+        if (i >= len_ || i < 0) {
             throw std::out_of_range("");
         }
         return m[i];
     }
 
     const int& operator[] (int i) const{        
-        if (i >= len_) {
+        if (i >= len_ || i < 0) {
             throw std::out_of_range("");
         }
         return m[i];
@@ -94,14 +94,14 @@ public:
     }
 
     Line& operator[] (int i) {
-        if (i >= rows_) {
+        if (i >= rows_ || i < 0) {
             throw std::out_of_range("");
         }
         return m[i];
     }
 
     const Line& operator[] (int i) const {
-        if (i >= rows_) {
+        if (i >= rows_ || i < 0) {
             throw std::out_of_range("");
         }
         return m[i];
@@ -113,10 +113,10 @@ public:
         std::swap(m, b.m);
     }
 
-    unsigned getRows() const{
+    size_t getRows() const{
         return cols_;
     }
-    unsigned getColumns() const{
+    size_t getColumns() const{
         return rows_;
     }
 };
